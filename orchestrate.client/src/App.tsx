@@ -1,58 +1,47 @@
-import { useEffect, useState } from 'react';
-import './App.css';
+import { ClerkProvider, useAuth } from '@clerk/clerk-react';
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import Login from './pages/Login';
 
-interface Forecast {
-    date: string;
-    temperatureC: number;
-    temperatureF: number;
-    summary: string;
+// This would be stored as env variable or secret
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error('Add your Clerk Publishable Key to the .env.local file')
 }
 
 function App() {
-    const [forecasts, setForecasts] = useState<Forecast[]>();
+  return (
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route 
+            path="/" 
+            element={
+              <RequireAuth>
+                HI!
+              </RequireAuth>
+            } 
+          />
+        </Routes>
+      </BrowserRouter>
+    </ClerkProvider>
+  );
+}
 
-    useEffect(() => {
-        populateWeatherData();
-    }, []);
+// Simple auth guard component
+function RequireAuth({ children }: { children: React.ReactNode }) {
+  const { isSignedIn, isLoaded } = useAuth();
+  
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+  
+  if (!isSignedIn) {
+    return <Navigate to="/login" replace />;
+  }
 
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tableLabel">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
-
-    return (
-        <div>
-            <h1 id="tableLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
-        </div>
-    );
-
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        if (response.ok) {
-            const data = await response.json();
-            setForecasts(data);
-        }
-    }
+  return <>{children}</>;
 }
 
 export default App;
