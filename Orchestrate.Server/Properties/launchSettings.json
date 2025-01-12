@@ -6,7 +6,8 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
+        "DanielsApiSettings__BaseUrl": "https://api.daniels-orchestral.com/v3"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5282"
@@ -17,7 +18,8 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
+        "DanielsApiSettings__BaseUrl": "https://api.daniels-orchestral.com/v3"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7019;http://localhost:5282"
@@ -28,7 +30,8 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
+        "DanielsApiSettings__BaseUrl": "https://api.daniels-orchestral.com/v3"
       }
     },
     "Container (Dockerfile)": {
@@ -37,7 +40,8 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
         "ASPNETCORE_HTTPS_PORTS": "8081",
-        "ASPNETCORE_HTTP_PORTS": "8080"
+        "ASPNETCORE_HTTP_PORTS": "8080",
+        "DanielsApiSettings__BaseUrl": "https://api.daniels-orchestral.com/v3"
       },
       "publishAllPorts": true,
       "useSSL": true

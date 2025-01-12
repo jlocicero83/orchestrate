@@ -1,12 +1,39 @@
+using System.Text.Json.Serialization.Metadata;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+
+var serializerSettings = new JsonSerializerOptions
+{
+  DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+  PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+  DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+  PropertyNameCaseInsensitive = true,
+  TypeInfoResolver = new DefaultJsonTypeInfoResolver()
+};
+serializerSettings.Converters.Add(new JsonStringEnumConverter());
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Add configuration sources
+if (builder.Environment.IsDevelopment())
+{
+  builder.Configuration.AddUserSecrets<Program>();
+}
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+  options.CustomSchemaIds(type => type.ToString());
+  options.IgnoreObsoleteActions();
+  options.IgnoreObsoleteProperties();
+});
 
+// Dependency Resolution
+
+// Build the Application
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -19,9 +46,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Microsoft Settings
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
+
+// Register Middleware
 
 app.MapControllers();
 
