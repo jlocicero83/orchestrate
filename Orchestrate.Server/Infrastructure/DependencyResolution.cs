@@ -1,4 +1,5 @@
-﻿using Orchestrate.Common.Settings;
+﻿using Orchestrate.Common.ApiClients.DanielsOrchestralApi;
+using Orchestrate.Common.Settings;
 
 namespace Orchestrate.Server.Infrastructure
 {
@@ -23,7 +24,7 @@ namespace Orchestrate.Server.Infrastructure
 
     private static void RegisterApis(this IServiceCollection services, IConfiguration configuration)
     {
-
+      services.AddScoped<IDanielsOrchestralApiClient, DanielsOrchestralApiClient>();
     }
   }
 }
