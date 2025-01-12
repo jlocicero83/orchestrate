@@ -23,6 +23,11 @@
     <ProjectReference Include="..\orchestrate.client\orchestrate.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\Orchestrate.Common\Orchestrate.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\" />
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchestrate.Server", "Orche
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "orchestrate.client", "orchestrate.client\orchestrate.client.esproj", "{E05CF17D-B812-480B-B657-7695A80D9B4A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchestrate.Common", "Orchestrate.Common\Orchestrate.Common.csproj", "{44664D33-9B83-45A1-8469-ABE2F7DE03AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{E05CF17D-B812-480B-B657-7695A80D9B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E05CF17D-B812-480B-B657-7695A80D9B4A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E05CF17D-B812-480B-B657-7695A80D9B4A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{44664D33-9B83-45A1-8469-ABE2F7DE03AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44664D33-9B83-45A1-8469-ABE2F7DE03AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44664D33-9B83-45A1-8469-ABE2F7DE03AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44664D33-9B83-45A1-8469-ABE2F7DE03AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
