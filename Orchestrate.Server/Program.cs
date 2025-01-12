@@ -17,13 +17,9 @@ serializerSettings.Converters.Add(new JsonStringEnumConverter());
 var builder = WebApplication.CreateBuilder(args);
 
 // Add configuration sources
-//if (builder.Environment.IsDevelopment())
-//{
-//  builder.Configuration.AddUserSecrets<Program>();
-//}
+
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
