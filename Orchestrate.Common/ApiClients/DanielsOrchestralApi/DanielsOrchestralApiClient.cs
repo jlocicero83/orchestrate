@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Orchestrate.Common.Settings;
 
@@ -11,27 +6,28 @@ namespace Orchestrate.Common.ApiClients.DanielsOrchestralApi
 {
   public interface IDanielsOrchestralApiClient
   {
-    Task<List<SearchDatabaseResponseV3Model>> SearchDatabaseAsync(string composer, string work);
-    Task<FetchWorkResponseV3Model> FetchWorkAsync(string workId);
+    Task<List<SearchDatabaseV3ResponseModel>> SearchDatabaseAsync(string composer, string work, CancellationToken token);
+    Task<FetchWorkV3ResponseModel> FetchWorkAsync(string workId,  CancellationToken token);
   }
-
   public class DanielsOrchestralApiClient : BaseApiClient<DanielsOrchestralApiClient>, IDanielsOrchestralApiClient
   {
     private readonly string _apiId;
     private readonly string _apiToken;
+
     public DanielsOrchestralApiClient(
       IOptions<DanielsApiSettings> settings,
       HttpClient httpClient,
       ILogger<DanielsOrchestralApiClient> logger)
-      : base(httpClient,
-          settings.Value.BaseUrl,
-          logger)
+        : base(
+            httpClient,
+            settings.Value.BaseUrl,
+            logger)
     {
       _apiId = settings.Value.ApiId.ToString();
       _apiToken = settings.Value.ApiToken;
     }
 
-    public async Task<List<SearchDatabaseResponseV3Model>> SearchDatabaseAsync(string composer, string work)
+    public async Task<List<SearchDatabaseV3ResponseModel>> SearchDatabaseAsync(string composer, string work, CancellationToken token)
     {
       // get headers
       var additionalHeaders = new List<KeyValuePair<string, string>>()
@@ -43,7 +39,7 @@ namespace Orchestrate.Common.ApiClients.DanielsOrchestralApi
       var headers = GetHeaders(additionalHeaders);
 
       // build the API request
-      var request = new ApiRequest<List<SearchDatabaseResponseV3Model>>
+      var request = new ApiRequest<List<SearchDatabaseV3ResponseModel>>
       {
         Method = HttpMethod.Get,
         Resource = "search",
@@ -55,7 +51,7 @@ namespace Orchestrate.Common.ApiClients.DanielsOrchestralApi
       return response.Body;
     }
 
-    public async Task<FetchWorkResponseV3Model> FetchWorkAsync(string workId)
+    public async Task<FetchWorkV3ResponseModel> FetchWorkAsync(string workId, CancellationToken token)
     {
       var additionalHeaders = new List<KeyValuePair<string, string>>()
       {
@@ -64,7 +60,7 @@ namespace Orchestrate.Common.ApiClients.DanielsOrchestralApi
 
       var headers = GetHeaders(additionalHeaders);
 
-      var request = new ApiRequest<FetchWorkResponseV3Model>
+      var request = new ApiRequest<FetchWorkV3ResponseModel>
       {
         Method = HttpMethod.Get,
         Resource = "fetch",

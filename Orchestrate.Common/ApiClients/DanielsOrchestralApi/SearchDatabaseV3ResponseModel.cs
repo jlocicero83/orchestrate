@@ -2,7 +2,7 @@
 
 namespace Orchestrate.Common.ApiClients.DanielsOrchestralApi
 {
-  public class SearchDatabaseResponseV3Model
+  public class SearchDatabaseV3ResponseModel
   {
     public string Composer { get; set; }
 
@@ -25,10 +25,10 @@ namespace Orchestrate.Common.ApiClients.DanielsOrchestralApi
 
     [JsonPropertyName("work_domo_uid")]
     public string WorkDomoId { get; set; }
-    public List<SearchDbMovementV3Model>? Movements { get; set; }
+    public List<SearchDatabaseV3ResponseMovement>? Movements { get; set; }
   }
 
-  public class SearchDbMovementV3Model
+  public class SearchDatabaseV3ResponseMovement
   {
     public string Order { get; set; }
     public string Duration { get; set; }

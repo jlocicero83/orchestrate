@@ -2,10 +2,10 @@
 
 namespace Orchestrate.Common.ApiClients.DanielsOrchestralApi
 {
-  public class FetchWorkResponseV3Model
+  public class FetchWorkV3ResponseModel
   {
     public string Formula { get; set; }
-    public FetchWorkComposerV3Model Composer { get; set; }
+    public FetchWorkV3ResponseComposer Composer { get; set; }
     public string Duration { get; set; }
     public string Title { get; set; }
     public string Remarks { get; set; }
@@ -20,13 +20,12 @@ namespace Orchestrate.Common.ApiClients.DanielsOrchestralApi
     [JsonPropertyName("composed_to")]
     public string ComposedTo { get; set; }
 
-    public List<FetchWorkMovementV3Model>? Movements { get; set; }
+    public List<FetchWorkV3ResponseMovement>? Movements { get; set; }
 
-    //public EnsembleV3Model Ensemble { get; set; }
+    //public FetchWorkV3ResponseEnsemble Ensemble { get; set; }
   }
 
-
-  public class FetchWorkComposerV3Model
+  public class FetchWorkV3ResponseComposer
   {
 
     [JsonPropertyName("domo_uid")]
@@ -50,13 +49,13 @@ namespace Orchestrate.Common.ApiClients.DanielsOrchestralApi
 
   // TODO: Response does not match what's in daniel's documentation... 
   // update model when their support responds.
-  public class FetchWorkEnsembleV3Model
+  public class FetchWorkV3ResponseEnsemble
   {
     public string Abbreviation { get; set; }
     public int Count { get; set; }
     public int Order { get; set; }
   }
-  public class FetchWorkMovementV3Model
+  public class FetchWorkV3ResponseMovement
   {
     public string Duration { get; set; }
     public string Name { get; set; }

@@ -1,6 +1,8 @@
 using System.Text.Json.Serialization.Metadata;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Orchestrate.Server.Infrastructure;
+using Orchestrate.Server.Infrastructure.Middleware;
 
 var serializerSettings = new JsonSerializerOptions
 {
@@ -15,10 +17,10 @@ serializerSettings.Converters.Add(new JsonStringEnumConverter());
 var builder = WebApplication.CreateBuilder(args);
 
 // Add configuration sources
-if (builder.Environment.IsDevelopment())
-{
-  builder.Configuration.AddUserSecrets<Program>();
-}
+//if (builder.Environment.IsDevelopment())
+//{
+//  builder.Configuration.AddUserSecrets<Program>();
+//}
 
 // Add services to the container.
 
@@ -32,6 +34,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // Dependency Resolution
+DependencyResolution.Configure(builder.Services, builder.Configuration);
 
 // Build the Application
 var app = builder.Build();
@@ -51,6 +54,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 // Register Middleware
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 

@@ -1,5 +1,6 @@
 ﻿using Orchestrate.Common.ApiClients.DanielsOrchestralApi;
 using Orchestrate.Common.Settings;
+using Orchestrate.Server.Features.DanielsDatabase;
 
 namespace Orchestrate.Server.Infrastructure
 {
@@ -19,6 +20,8 @@ namespace Orchestrate.Server.Infrastructure
 
     private static void RegisterFeatures(this IServiceCollection services, IConfiguration configuration)
     {
+      // Daniel's Database
+      DanielsDatabaseDependencyResolution.Configure(services, configuration);
 
     }
 
