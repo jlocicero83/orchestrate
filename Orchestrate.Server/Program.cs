@@ -3,6 +3,8 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using Orchestrate.Server.Infrastructure;
 using Orchestrate.Server.Infrastructure.Middleware;
+using Orchestrate.Server.Data;
+using Microsoft.EntityFrameworkCore;
 
 var serializerSettings = new JsonSerializerOptions
 {
@@ -16,10 +18,10 @@ serializerSettings.Converters.Add(new JsonStringEnumConverter());
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add configuration sources
-
-
 // Add services to the container.
+builder.Services.AddDbContext<OrchestrateDbContext>(options =>
+  options.UseNpgsql(builder.Configuration.GetConnectionString("OrchestrateDev")));
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
