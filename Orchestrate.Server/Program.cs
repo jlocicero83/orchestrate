@@ -1,10 +1,10 @@
-using System.Text.Json.Serialization.Metadata;
-using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
+using Microsoft.EntityFrameworkCore;
+using Orchestrate.Server.Data;
 using Orchestrate.Server.Infrastructure;
 using Orchestrate.Server.Infrastructure.Middleware;
-using Orchestrate.Server.Data;
-using Microsoft.EntityFrameworkCore;
 
 var serializerSettings = new JsonSerializerOptions
 {
@@ -19,8 +19,13 @@ serializerSettings.Converters.Add(new JsonStringEnumConverter());
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<OrchestrateDbContext>(options =>
-  options.UseNpgsql(builder.Configuration.GetConnectionString("OrchestrateDev")));
+builder.Services.AddDbContextFactory<OrchestrateDbContext>(options =>
+options.UseNpgsql(builder.Configuration.GetConnectionString("OrchestrateDev"))
+  .UseSnakeCaseNamingConvention());
+
+builder.Services.AddDbContextFactory<TenantDbContext>(options =>
+options.UseNpgsql(builder.Configuration.GetConnectionString("OrchestrateDev"))
+  .UseSnakeCaseNamingConvention());
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -52,7 +57,10 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 // Register Middleware
+app.UseMiddleware<ResolveTenantMiddleware>();
+
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 
 app.MapControllers();
 

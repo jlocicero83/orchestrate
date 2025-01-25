@@ -98,12 +98,11 @@ user permission overrides table */
 --		('Guest Conductor'),
 --		('Soloist');
 
-/* ************* ENTITY TABLES ****************** */c
+/* ************* ENTITY TABLES ****************** */
 --create table tenants (
---	tenant_id serial primary key,
---	parent_tenant_id int references tenants(tenant_id) on delete set null,
+--	tenant_id varchar(10) primary key, /*this will be their subdomain */
+--	parent_tenant_id varchar(10) references tenants(tenant_id) on delete set null,
 --	name varchar(150),
---	subdomain varchar(10) not null unique,
 --	contact_name varchar(100) not null,
 --	contact_email varchar(100) not null,
 --	contact_phone varchar(50),
@@ -112,24 +111,25 @@ user permission overrides table */
 --	paid_thru_date date,
 --	agreed_price decimal(10, 2) not null check (agreed_price >= 0),
 --	notes text,
---  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
---  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
---  created_by varchar(30) not null,
---  updated_by varchar(30)
+--	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+--	updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+--	created_by varchar(30) not null,
+--	updated_by varchar(30)
 --);
 
 /* Index for subdomain lookup */
---create index idx_tenant_subdomain on tenants(subdomain);
 --create index idx_active_tenant on tenants(is_active);
 
---insert into tenants(name, subdomain, contact_name, contact_email, paid_thru_date, agreed_price, created_by)
---	Values('Orchestrate Admin', 'admin', 'Joe LoCicero', 'N/A', DATE('2099-01-01'), 0.00, 'SYS-ADMIN-JVL');
+--insert into tenants(tenant_id, name, contact_name, contact_email, paid_thru_date, agreed_price, created_by)
+--	Values('test', 'Test Symphony Orchestra', 'Clark Kent', 'superman@test.com', DATE('2028-01-01'), 0.00, 'SYS-ADMIN-JL'),
+--		('loc', 'LoCicero Symphony', 'Joe Lo', 'jlo@test.com', DATE('2028-01-01'), 0.00, 'SYS-ADMIN-JL'),
+--		('two', 'The Wadner Orchestra', 'Alex W.', 'alex@test.com', DATE('2028-01-01'), 0.00, 'SYS-ADMIN-JL')
 
 /* People table for storing person information. A Person is not always a User of the system...
 	but a User is always a Person */
 --create table people (
 --	person_id serial primary key,
---	tenant_id integer references tenants(tenant_id) not null,
+--	tenant_id varchar(10) references tenants(tenant_id) not null,
 --	first_name varchar(100) not null,
 --	last_name varchar(100) not null,
 --	preferred_name varchar(100),
@@ -138,12 +138,12 @@ user permission overrides table */
 --	address JSONB,
 --	is_active boolean not null default true /* active relationship with tenant, not active as a user */
 --);
-
+--
 --create index idx_active_person_tenant on people(tenant_id, is_active);
 
 --insert into people(tenant_id, first_name, last_name)
---	Values(1, 'Joe', 'LoCicero'),
---		(1, 'Alex', 'Wadner');
+--	Values('test', 'Joe', 'LoCicero'),
+--		('test', 'Alex', 'Wadner');
 
 /* Represents an actual User of the Orchestrate system. Must have an associated
 	 entry in the People table. */
@@ -154,9 +154,9 @@ user permission overrides table */
 --	is_active boolean not null default true, /* active user in the system. if false, login denied/ideally removed creds from clerk */
 --	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 --	updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
---	created_by varchar(30) not null,
+--	created_by varchar(30) not null
 --);
-
+--
 --create index idx_user_email on users(email);
 
 
@@ -167,7 +167,7 @@ user permission overrides table */
 --create table user_tenants (
 --	id serial primary key,
 --	user_id integer not null references users(user_id),
---	tenant_id integer not null references tenants(tenant_id),
+--	tenant_id varchar(10) not null references tenants(tenant_id),
 --	role_id integer not null references roles(role_id), /* role for this user in this specific tenant */
 --	is_active boolean default true,
 --	unique(user_id, tenant_id)
@@ -180,7 +180,7 @@ user permission overrides table */
 --create table user_permission_overrides (
 --	id serial primary key,
 --	user_id integer references users(user_id),
---	tenant_id integer references tenants(tenant_id),
+--	tenant_id varchar(10) references tenants(tenant_id),
 --	module_permissions JSONB not null,
 --	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 --	updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -193,7 +193,7 @@ user permission overrides table */
 /* maps people to their profiles based on profile type */
 --create table person_profiles (
 --	id serial primary key,
---	tenant_id integer references tenants(tenant_id),
+--	tenant_id varchar(10) references tenants(tenant_id),
 --	person_id integer references people(person_id),
 --	profile_type_id integer references person_profile_types(id),
 --	is_active boolean default true, /* whether the specific profile is active for the person */
@@ -208,7 +208,7 @@ user permission overrides table */
 
 --create table musician_profiles (
 --	id serial primary key,
---	tenant_id integer references tenants(tenant_id),
+--	tenant_id varchar(10) references tenants(tenant_id),
 --	person_id integer references people(person_id),
 --	relationship varchar(50), /* ie. Tenured FTE, Untenured FTE, Short-Term Contract, etc.) */
 --	start_date date,
