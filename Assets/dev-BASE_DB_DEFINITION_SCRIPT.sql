@@ -151,7 +151,7 @@ user permission overrides table */
 --	user_id serial primary key,
 --	person_id integer not null references people(person_id),
 --	email varchar(100) unique not null,
---	is_active boolean not null default true, /* active user in the system. if false, login denied/ideally removed creds from clerk */
+--	is_active boolean not null default true, /* active user in the system. if false, login denied/ideally removed creds from auth provider */
 --	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 --	updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 --	created_by varchar(30) not null
