@@ -45,6 +45,9 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
     },
+    define:{
+        'import.meta.env.VITE_API_TARGET': JSON.stringify(target)
+    },
     server: {
         proxy: {
             '^/weatherforecast': {
